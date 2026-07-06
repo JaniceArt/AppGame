@@ -1,33 +1,18 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Modal } from 'react-native';
 import { useRouter, useFocusEffect } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { apiClient, getUser, setToken } from '../api/apiClient';
 
 export default function HomeScreen() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
-  const [showAd, setShowAd] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
       setUser(getUser());
       apiClient('/track_view', { method: 'POST' }).catch(() => {});
-      
-      const checkAd = async () => {
-        const adClosed = await AsyncStorage.getItem('ad_closed');
-        if (!adClosed) {
-          setTimeout(() => setShowAd(true), 60000); // 1 minute
-        }
-      };
-      checkAd();
     }, [])
   );
-
-  const closeAd = async () => {
-    setShowAd(false);
-    await AsyncStorage.setItem('ad_closed', 'true');
-  };
 
   const games = [
     { id: 1, name: 'Flappy Bird', desc: 'Điều khiển chú chim bay qua các ống nước.' },
@@ -84,22 +69,6 @@ export default function HomeScreen() {
       ))}
       
       <View style={{ height: 40 }} />
-
-      <Modal visible={showAd} transparent animationType="fade">
-        <View style={styles.modalOverlay}>
-          <View style={styles.popupBox}>
-            <TouchableOpacity style={styles.closeBtn} onPress={closeAd}>
-              <Text style={{fontWeight: '900', color: '#1a202c'}}>X</Text>
-            </TouchableOpacity>
-            <Text style={styles.popupTag}>QUẢNG CÁO</Text>
-            <Text style={styles.popupTitle}>Sản phẩm VIP</Text>
-            <Text style={styles.popupDesc}>Mua ngay gói VIP để nhân đôi điểm số Flappy Bird của bạn!</Text>
-            <TouchableOpacity style={styles.btn} onPress={closeAd}>
-              <Text style={styles.btnText}>Đóng</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </ScrollView>
   );
 }
@@ -116,11 +85,5 @@ const styles = StyleSheet.create({
   cardTitle: { fontSize: 18, fontWeight: '900', color: '#2d3748' },
   cardDesc: { fontSize: 14, color: '#4a5568', marginVertical: 10, fontWeight: '600' },
   playBtn: { backgroundColor: '#319795', paddingVertical: 10, borderRadius: 8, alignItems: 'center', borderWidth: 2, borderColor: '#2d3748', borderBottomWidth: 4, borderRightWidth: 4 },
-  playBtnText: { color: '#fff', fontWeight: '900' },
-  modalOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.6)', justifyContent: 'center', alignItems: 'center' },
-  popupBox: { backgroundColor: '#fdf6e3', padding: 30, borderRadius: 12, borderWidth: 3, borderColor: '#2d3748', borderBottomWidth: 6, borderRightWidth: 6, width: '85%', alignItems: 'center' },
-  closeBtn: { position: 'absolute', top: 10, right: 10, backgroundColor: '#fff', padding: 5, borderRadius: 6, borderWidth: 2, borderColor: '#2d3748' },
-  popupTag: { color: '#e53e3e', fontWeight: '900', fontSize: 14, marginBottom: 10 },
-  popupTitle: { fontSize: 24, fontWeight: '900', color: '#1a202c', marginBottom: 15 },
-  popupDesc: { fontSize: 16, color: '#4a5568', textAlign: 'center', marginBottom: 20, fontWeight: '600' }
+  playBtnText: { color: '#fff', fontWeight: '900' }
 });
