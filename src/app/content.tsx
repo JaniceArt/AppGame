@@ -10,7 +10,7 @@ export default function ContentScreen() {
   const [comments, setComments] = useState([]);
   const [cName, setCName] = useState('');
   const [cEmail, setCEmail] = useState('');
-  const [cRating, setCRating] = useState('5');
+  const [cRating, setCRating] = useState(5);
   const [cContent, setCContent] = useState('');
 
   const loadData = () => {
@@ -77,7 +77,14 @@ export default function ContentScreen() {
       <View style={styles.form}>
         <TextInput style={styles.input} placeholder="Tên" value={cName} onChangeText={setCName} />
         <TextInput style={styles.input} placeholder="Email" value={cEmail} onChangeText={setCEmail} keyboardType="email-address" autoCapitalize="none" />
-        <TextInput style={styles.input} placeholder="Điểm đánh giá (1-5)" value={cRating} onChangeText={setCRating} keyboardType="numeric" />
+        <View style={{flexDirection: 'row', marginBottom: 10, alignItems: 'center'}}>
+          <Text style={{marginRight: 10, fontWeight: '900', color: '#1a202c'}}>Đánh giá:</Text>
+          {[1, 2, 3, 4, 5].map(star => (
+            <TouchableOpacity key={star} onPress={() => setCRating(star)}>
+              <Text style={{fontSize: 24, color: star <= cRating ? '#ecc94b' : '#cbd5e0', marginRight: 5}}>⭐</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
         <TextInput style={[styles.input, { minHeight: 60 }]} placeholder="Nội dung" value={cContent} onChangeText={setCContent} multiline />
         <TouchableOpacity style={styles.btn} onPress={handleComment}>
           <Text style={styles.btnText}>Gửi Bình luận</Text>
