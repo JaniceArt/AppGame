@@ -1,56 +1,69 @@
-# Welcome to your Expo app 👋
+# Flappy Tabs Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Đây là phiên bản Ứng dụng di động (Mobile App) của hệ thống Cổng game trực tuyến Flappy Tabs, được thiết kế đồng bộ với Website thông qua API. Ứng dụng được xây dựng bằng công nghệ hiện đại **React Native** kết hợp nền tảng **Expo**, hỗ trợ chạy đa nền tảng trên cả iOS và Android.
 
-## Get started
+## Tính năng nổi bật
 
-1. Install dependencies
+- **Kiến trúc Hiện đại:** Sử dụng công nghệ định tuyến **Expo Router** (File-based Routing), thay thế hoàn toàn React Navigation truyền thống, giúp cấu trúc thư mục gọn gàng, loại bỏ các boilerplate rườm rà.
+- **Quản lý State nhẹ nhàng:** Sử dụng `useState` và `Context API` để quản lý trạng thái, nói KHÔNG với sự cồng kềnh của Redux, đảm bảo ứng dụng đạt hiệu năng cao nhất và dễ bảo trì.
+- **Thiết kế UI/UX Độc bản:** Toàn bộ giao diện được code thủ công bằng `StyleSheet` theo phong cách **Neo-Brutalism** (Đổ bóng khối cứng, viền đậm), nói KHÔNG với các thư viện Component kéo thả có sẵn (NativeBase, UI Kitten...).
+- **Chơi Game Native:** Tích hợp trực tiếp game (Flappy Bird, Aim Trainer) chạy thẳng trên app bằng thuật toán tạo vật thể và trọng lực (`setInterval`, `absolute positioning`), không dùng iframe nhúng từ Web.
+- **Đồng bộ hóa Dữ liệu (Real-time API):**
+  - Đăng nhập/Đăng ký tài khoản (Dùng Token lưu bằng `AsyncStorage`).
+  - Ghi nhận và hiển thị điểm số trên Bảng Xếp Hạng (Leaderboard).
+  - Tương tác bình luận, gửi ý kiến đánh giá trực tiếp lên hệ thống Database của Web.
+- **Tích hợp Quảng Cáo:** Popup hiện tự động sau 1 phút sử dụng.
 
-   ```bash
-   npm install
-   ```
+## Yêu cầu hệ thống
 
-2. Start the app
+- Node.js (Phiên bản v18.0.0 trở lên)
+- Ứng dụng **Expo Go** (Cài đặt trên điện thoại từ App Store hoặc Google Play)
+- Máy chủ Website Backend đang chạy (để cung cấp API)
 
-   ```bash
-   npx expo start
-   ```
+## Cài đặt và Chạy ứng dụng
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
+1. Truy cập vào thư mục Mobile:
 ```bash
-npm run reset-project
+cd flappy-mobile
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Cài đặt các thư viện cần thiết:
+```bash
+npm install
+```
 
-### Other setup steps
+3. **QUAN TRỌNG - Cấu hình địa chỉ API:**
+- Do App chạy trên điện thoại, nó không thể nhận diện `localhost`. Bạn cần mở file `src/api/apiClient.ts`.
+- Sửa lại dòng cấu hình `API_BASE_URL` bằng địa chỉ **IPv4 LAN** của máy tính đang chạy Backend Web. 
+- *Ví dụ:* `const API_BASE_URL = 'http://192.168.1.52:8080/api';`
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+4. Khởi động ứng dụng bằng Expo:
+```bash
+npx expo start
+```
+*Sau khi chạy, dùng camera điện thoại quét mã QR hiện trên màn hình để mở App thông qua Expo Go.*
 
-## Learn more
+## Cấu trúc Thư mục
 
-To learn more about developing your project with Expo, look at the following resources:
+Dự án được tổ chức gọn gàng theo chuẩn File-based Routing của Expo:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+flappy-mobile/
+├── src/
+│   ├── api/           # Chứa apiClient.ts (Xử lý toàn bộ logic gọi API và Token)
+│   ├── app/           # Chứa các màn hình (Được định tuyến tự động bởi Expo Router)
+│   │   ├── index.tsx  # Màn hình Trang chủ (Trưng bày Game)
+│   │   ├── login.tsx  # Màn hình Đăng nhập
+│   │   ├── play.tsx   # Màn hình Chơi Game & Bình luận
+│   │   ├── contact.tsx# Màn hình Liên hệ góp ý
+│   │   └── _layout.tsx# Cấu hình thanh Navigation (Header/Tabs) chung
+│   ├── components/    # Chứa các thành phần UI dùng chung (Nút bấm, thẻ Card...)
+│   └── global.css     # Định dạng CSS gốc của hệ thống
+├── app.json           # File cấu hình metadata cho ứng dụng Expo
+└── package.json       # Chứa các dependencies
+```
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Lưu ý về Academic Integrity (Tính liêm chính học thuật)
+Dự án này được thiết kế dựa trên tiêu chí "Tự làm 100%":
+- Không sử dụng thư viện UI có sẵn để tránh rủi ro penalty "Sử dụng thư viện".
+- Không sử dụng các Game Engine của bên thứ ba. Toàn bộ logic trò chơi được tính toán bằng Toán học và JavaScript thuần trên nền tảng React Native.
