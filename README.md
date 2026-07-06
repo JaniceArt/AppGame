@@ -1,69 +1,90 @@
 # Flappy Tabs Mobile App
 
-Đây là phiên bản Ứng dụng di động (Mobile App) của hệ thống Cổng game trực tuyến Flappy Tabs, được thiết kế đồng bộ với Website thông qua API. Ứng dụng được xây dựng bằng công nghệ hiện đại **React Native** kết hợp nền tảng **Expo**, hỗ trợ chạy đa nền tảng trên cả iOS và Android.
-
-## Tính năng nổi bật
-
-- **Kiến trúc Hiện đại:** Sử dụng công nghệ định tuyến **Expo Router** (File-based Routing), thay thế hoàn toàn React Navigation truyền thống, giúp cấu trúc thư mục gọn gàng, loại bỏ các boilerplate rườm rà.
-- **Quản lý State nhẹ nhàng:** Sử dụng `useState` và `Context API` để quản lý trạng thái, nói KHÔNG với sự cồng kềnh của Redux, đảm bảo ứng dụng đạt hiệu năng cao nhất và dễ bảo trì.
-- **Thiết kế UI/UX Độc bản:** Toàn bộ giao diện được code thủ công bằng `StyleSheet` theo phong cách **Neo-Brutalism** (Đổ bóng khối cứng, viền đậm), nói KHÔNG với các thư viện Component kéo thả có sẵn (NativeBase, UI Kitten...).
-- **Chơi Game Native:** Tích hợp trực tiếp game (Flappy Bird, Aim Trainer) chạy thẳng trên app bằng thuật toán tạo vật thể và trọng lực (`setInterval`, `absolute positioning`), không dùng iframe nhúng từ Web.
-- **Đồng bộ hóa Dữ liệu (Real-time API):**
-  - Đăng nhập/Đăng ký tài khoản (Dùng Token lưu bằng `AsyncStorage`).
-  - Ghi nhận và hiển thị điểm số trên Bảng Xếp Hạng (Leaderboard).
-  - Tương tác bình luận, gửi ý kiến đánh giá trực tiếp lên hệ thống Database của Web.
-- **Tích hợp Quảng Cáo:** Popup hiện tự động sau 1 phút sử dụng.
+Ứng dụng di động giải trí đa nền tảng, tích hợp trực tiếp các tựa game được yêu thích và kết nối đồng bộ dữ liệu với hệ thống Flappy Tabs Web Portal.
 
 ## Yêu cầu hệ thống
 
-- Node.js (Phiên bản v18.0.0 trở lên)
-- Ứng dụng **Expo Go** (Cài đặt trên điện thoại từ App Store hoặc Google Play)
-- Máy chủ Website Backend đang chạy (để cung cấp API)
+- Hệ điều hành: Windows 10/11, macOS, hoặc Linux
+- Môi trường: Node.js (v18.x hoặc mới hơn)
+- Thiết bị thử nghiệm: Điện thoại iOS/Android cài đặt sẵn ứng dụng **Expo Go**
 
-## Cài đặt và Chạy ứng dụng
+## Hướng dẫn cài đặt môi trường
 
-1. Truy cập vào thư mục Mobile:
-```bash
-cd flappy-mobile
-```
+### 1. Cài đặt Node.js và npm
+1. Truy cập [https://nodejs.org/](https://nodejs.org/)
+2. Tải và cài đặt phiên bản LTS mới nhất.
+3. Kiểm tra cài đặt:
+   ```bash
+   node --version
+   npm --version
+   ```
 
-2. Cài đặt các thư viện cần thiết:
+### 2. Cài đặt thiết bị thử nghiệm (Điện thoại)
+- Truy cập App Store (iOS) hoặc Google Play Store (Android).
+- Tìm và cài đặt ứng dụng **Expo Go**.
+- Đảm bảo điện thoại và máy tính của bạn đang kết nối chung một mạng Wi-Fi.
+
+## Hướng dẫn chạy ứng dụng
+
+### 1. Cài đặt thư viện (Dependencies)
+Mở terminal tại thư mục gốc của dự án Mobile và chạy lệnh:
 ```bash
 npm install
 ```
 
-3. **QUAN TRỌNG - Cấu hình địa chỉ API:**
-- Do App chạy trên điện thoại, nó không thể nhận diện `localhost`. Bạn cần mở file `src/api/apiClient.ts`.
-- Sửa lại dòng cấu hình `API_BASE_URL` bằng địa chỉ **IPv4 LAN** của máy tính đang chạy Backend Web. 
-- *Ví dụ:* `const API_BASE_URL = 'http://192.168.1.52:8080/api';`
+### 2. Cấu hình kết nối API
+Để App trên điện thoại có thể giao tiếp với Backend trên máy tính, bạn cần cấu hình lại IP:
+1. Mở terminal (CMD/PowerShell), gõ lệnh `ipconfig` (Windows) hoặc `ifconfig` (macOS) để xem địa chỉ IPv4 LAN của máy tính.
+2. Mở file `src/api/apiClient.ts`.
+3. Thay đổi giá trị biến `API_BASE_URL` bằng địa chỉ IP của bạn. 
+   *(Ví dụ: `http://192.168.1.52:8080/api`)*
 
-4. Khởi động ứng dụng bằng Expo:
+### 3. Khởi động ứng dụng
 ```bash
 npx expo start
 ```
-*Sau khi chạy, dùng camera điện thoại quét mã QR hiện trên màn hình để mở App thông qua Expo Go.*
+- Trên màn hình Terminal sẽ hiện ra một mã QR.
+- Mở ứng dụng **Expo Go** trên điện thoại và chọn tính năng quét mã (Scan QR Code).
+- Quét mã trên màn hình máy tính để tải và chạy ứng dụng.
 
-## Cấu trúc Thư mục
+## Công nghệ sử dụng
 
-Dự án được tổ chức gọn gàng theo chuẩn File-based Routing của Expo:
+- **React Native**: Khung ứng dụng phát triển đa nền tảng.
+- **Expo & Expo Router**: Công cụ tối ưu hóa và kiến trúc định tuyến File-based Routing.
+- **AsyncStorage**: Quản lý lưu trữ phiên đăng nhập cục bộ.
+- **Tailwind/Vanilla CSS (Metro Bundler)**: Định dạng giao diện theo phong cách Neo-Brutalism.
+
+## Cấu trúc thư mục
 
 ```
 flappy-mobile/
 ├── src/
-│   ├── api/           # Chứa apiClient.ts (Xử lý toàn bộ logic gọi API và Token)
-│   ├── app/           # Chứa các màn hình (Được định tuyến tự động bởi Expo Router)
-│   │   ├── index.tsx  # Màn hình Trang chủ (Trưng bày Game)
-│   │   ├── login.tsx  # Màn hình Đăng nhập
-│   │   ├── play.tsx   # Màn hình Chơi Game & Bình luận
-│   │   ├── contact.tsx# Màn hình Liên hệ góp ý
-│   │   └── _layout.tsx# Cấu hình thanh Navigation (Header/Tabs) chung
-│   ├── components/    # Chứa các thành phần UI dùng chung (Nút bấm, thẻ Card...)
-│   └── global.css     # Định dạng CSS gốc của hệ thống
-├── app.json           # File cấu hình metadata cho ứng dụng Expo
-└── package.json       # Chứa các dependencies
+│   ├── api/                # Cấu hình và quản lý các hàm gọi API
+│   │   └── apiClient.ts    
+│   ├── app/                # Hệ thống định tuyến màn hình (Expo Router)
+│   │   ├── (tabs)/         # Các màn hình chứa thanh điều hướng dưới (Bottom Tabs)
+│   │   ├── _layout.tsx     # Cấu trúc layout chung
+│   │   ├── index.tsx       # Màn hình chính
+│   │   ├── login.tsx       # Màn hình đăng nhập/đăng ký
+│   │   ├── play.tsx        # Màn hình chơi game
+│   │   └── contact.tsx     # Màn hình liên hệ
+│   ├── components/         # Các thành phần giao diện tái sử dụng (UI Components)
+│   ├── constants/          # Khai báo các hằng số hệ thống
+│   ├── hooks/              # Custom React Hooks
+│   └── global.css          # Định dạng CSS tổng thể
+├── app.json                # Cấu hình siêu dữ liệu của ứng dụng Expo
+└── package.json            # Quản lý thư viện
 ```
 
-## Lưu ý về Academic Integrity (Tính liêm chính học thuật)
-Dự án này được thiết kế dựa trên tiêu chí "Tự làm 100%":
-- Không sử dụng thư viện UI có sẵn để tránh rủi ro penalty "Sử dụng thư viện".
-- Không sử dụng các Game Engine của bên thứ ba. Toàn bộ logic trò chơi được tính toán bằng Toán học và JavaScript thuần trên nền tảng React Native.
+## Tính năng chính
+
+- Giao diện trực quan, phong cách thiết kế Neo-Brutalism hiện đại.
+- Đăng nhập, đăng ký và lưu phiên hoạt động (Session) an toàn.
+- Hệ thống giải trí: Trải nghiệm game tương tác mượt mà bằng engine native.
+- Tương tác cộng đồng: Đánh giá sao và gửi bình luận theo thời gian thực.
+- Đồng bộ đa nền tảng: Mọi dữ liệu xếp hạng (Leaderboard) được kết nối trực tiếp với Database trung tâm.
+- Hệ thống hỗ trợ: Form gửi ý kiến và liên hệ trực tiếp cho nhà phát triển.
+
+## Liên hệ hỗ trợ
+
+Trong quá trình triển khai, nếu hệ thống gặp lỗi kết nối API (`Network Error`), vui lòng kiểm tra lại cấu hình Tường lửa (Firewall) trên máy tính hoặc khởi động lại modem mạng để đồng bộ địa chỉ IP LAN.
