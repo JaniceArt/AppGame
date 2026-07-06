@@ -29,10 +29,10 @@ export default function PlayScreen() {
   const timerLoop = useRef<any>(null);
 
   // FLAPPY BIRD LOGIC
-  const gravity = 1.2;
-  const jumpStrength = -12;
+  const gravity = 0.8;
+  const jumpStrength = -10;
   const pipeWidth = 60;
-  const gap = 150;
+  const gap = 200;
   const birdSize = 30;
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function PlayScreen() {
             setPipeHeight(Math.floor(Math.random() * (GAME_HEIGHT - gap - 50)) + 50);
             return SCREEN_WIDTH;
           }
-          return x - 5;
+          return x - 4;
         });
       }, 30);
     }
