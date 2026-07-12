@@ -2,12 +2,30 @@ import { Platform } from 'react-native';
 
 const BASE_URL = 'http://192.168.1.52:8080/api';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 let userToken = '';
 let currentUser: any = null;
 
-export const setToken = (token: string, user: any = null) => {
+export const loadAuth = async () => {
+    const token = await AsyncStorage.getItem('token');
+    const user = await AsyncStorage.getItem('user');
+    if (token && user) {
+        userToken = token;
+        currentUser = JSON.parse(user);
+    }
+};
+
+export const setToken = async (token: string, user: any = null) => {
     userToken = token;
     currentUser = user;
+    if (token) {
+        await AsyncStorage.setItem('token', token);
+        await AsyncStorage.setItem('user', JSON.stringify(user));
+    } else {
+        await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('user');
+    }
 };
 
 export const getToken = () => userToken;

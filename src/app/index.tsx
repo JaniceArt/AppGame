@@ -48,7 +48,7 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </>
         ) : (
-          <TouchableOpacity style={styles.btn} onPress={() => { setToken(''); setUser(null); }}>
+          <TouchableOpacity style={styles.btn} onPress={async () => { await setToken(''); setUser(null); }}>
             <Text style={styles.btnText}>Đăng xuất</Text>
           </TouchableOpacity>
         )}

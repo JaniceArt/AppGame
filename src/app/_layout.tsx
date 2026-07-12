@@ -1,6 +1,16 @@
 import { Stack } from 'expo-router';
+import { useEffect, useState } from 'react';
+import { loadAuth } from '../api/apiClient';
 
 export default function RootLayout() {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    loadAuth().then(() => setIsReady(true));
+  }, []);
+
+  if (!isReady) return null;
+
   return (
     <Stack screenOptions={{ 
       headerStyle: { backgroundColor: '#e2e8f0' }, 
